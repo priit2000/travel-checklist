@@ -54,21 +54,14 @@
         }
 
         .lang-toggle {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            background: rgba(255,255,255,0.2);
-            border: 1px solid rgba(255,255,255,0.5);
-            color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 10px;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 500;
             cursor: pointer;
-        }
-
-        .lang-toggle:hover {
-            background: rgba(255,255,255,0.3);
-            transform: scale(1.05);
+            background: #667eea;
+            color: white;
         }
 
         h1 {
@@ -251,7 +244,6 @@
 <body>
     <div class="container">
         <div class="header">
-            <button class="lang-toggle" onclick="toggleLanguage()">EN | ET</button>
             <h1 id="title">📋 Travel Checklist</h1>
             <div class="progress">
                 <div class="progress-bar" id="progressBar"></div>
@@ -264,6 +256,7 @@
         <div class="footer">
             <button class="btn-clear" onclick="clearAll()" id="btnClear">🗑️ Clear All</button>
             <button class="btn-refresh" onclick="refreshSort()" id="btnSort">🔄 Sort</button>
+            <button class="lang-toggle" onclick="toggleLanguage()">EN</button>
         </div>
     </div>
 
