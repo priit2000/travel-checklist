@@ -2,7 +2,7 @@
 <html lang="et">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=5">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Reisi checklist</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✈️</text></svg>">
 
@@ -10,7 +10,6 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Reisi checklist">
-    <meta name="description" content="Organiseeri oma reisipakkimine selle lihtsa checklisti abil">
 
     <style>
         * {
@@ -19,29 +18,23 @@
             box-sizing: border-box;
         }
 
-        html {
+        html, body {
             height: 100%;
+            overflow: hidden;
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100%;
-            height: 100%;
-            margin: 0;
-            padding: 0;
         }
 
         .container {
             max-width: 500px;
-            width: 100%;
+            height: 100%;
             margin: 0 auto;
             background: white;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             display: flex;
             flex-direction: column;
-            height: 100%;
-            overflow: hidden;
         }
 
         .header {
@@ -52,9 +45,22 @@
             flex-shrink: 0;
         }
 
+        .lang-toggle {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
         h1 {
             font-size: 24px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             font-weight: 600;
         }
 
@@ -81,9 +87,8 @@
 
         .checklist {
             padding: 15px;
-            overflow-y: auto;
             flex: 1;
-            min-height: 0;
+            overflow-y: auto;
             -webkit-overflow-scrolling: touch;
         }
 
@@ -107,14 +112,8 @@
             margin-bottom: 6px;
             background: #f8f9fa;
             border-radius: 10px;
-            transition: all 0.3s ease;
             cursor: pointer;
             user-select: none;
-        }
-
-        .item:hover {
-            background: #e9ecef;
-            transform: translateX(5px);
         }
 
         .item.checked {
@@ -131,7 +130,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
             flex-shrink: 0;
         }
 
@@ -145,13 +143,10 @@
             color: white;
             font-size: 14px;
             opacity: 0;
-            transform: scale(0);
-            transition: all 0.3s ease;
         }
 
         .item.checked .checkbox::after {
             opacity: 1;
-            transform: scale(1);
         }
 
         .item-text {
@@ -179,15 +174,14 @@
             flex-shrink: 0;
         }
 
-        .btn-clear, .btn-refresh {
+        .btn {
             flex: 1;
-            padding: 12px 15px;
+            padding: 12px;
             border: none;
             border-radius: 10px;
             font-size: 15px;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s ease;
             color: white;
         }
 
@@ -195,41 +189,16 @@
             background: #ff6b6b;
         }
 
-        .btn-clear:hover {
-            background: #ff5252;
-        }
-
-        .btn-refresh {
+        .btn-sort {
             background: #4ecdc4;
-        }
-
-        .btn-refresh:hover {
-            background: #45b7b0;
-        }
-
-        .checklist::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .checklist::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
-        }
-
-        .checklist::-webkit-scrollbar-thumb {
-            background: #ccc;
-            border-radius: 10px;
-        }
-
-        .checklist::-webkit-scrollbar-thumb:hover {
-            background: #999;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>📋 Reisi checklist</h1>
+            <button class="lang-toggle" onclick="toggleLanguage()" id="langBtn">ET | EN</button>
+            <h1 id="title">📋 Reisi checklist</h1>
             <div class="progress">
                 <div class="progress-bar" id="progressBar"></div>
             </div>
@@ -239,107 +208,78 @@
         <div class="checklist" id="checklist"></div>
 
         <div class="footer">
-            <button class="btn-clear" onclick="clearAll()">🗑️ Tühjenda</button>
-            <button class="btn-refresh" onclick="refreshSort()">🔄 Sorteeri</button>
+            <button class="btn btn-clear" onclick="clearAll()" id="btnClear">🗑️ Tühjenda</button>
+            <button class="btn btn-sort" onclick="refreshSort()" id="btnSort">🔄 Sorteeri</button>
         </div>
     </div>
 
     <script>
-        const items = [
-            { category: 'Riided', items: [
-                'Teksad + lühikesed suvel',
-                'Alukad +4',
-                'Sokid x4',
-                'T-särk x3',
-                'Pusa, kapsun x2',
-                'Pidulik särk',
-                'Ujukad',
-                'Kaelus'
-            ]},
-            { category: 'Jalatsid', items: [
-                'Plätud',
-                'Saapad'
-            ]},
-            { category: 'Sport', items: [
-                'Jooksutossud',
-                'Jooks sokid x2',
-                'Jooks sokid x3',
-                'Jooks müts',
-                'Jooks Dressid x2',
-                'Jooks särk x2',
-                'Jooks kampsun x1',
-                'Jooks kampsun x2',
-                'Jooks kilekas',
-                'Jooks kõrvaklapid',
-                'Jooks pulss',
-                'Jooks Prillid'
-            ]},
-            { category: 'Talv', items: [
-                'Lume jope',
-                'Lume püksid',
-                'Lume kampsun',
-                'Lume mask',
-                'Lume pikad alukad',
-                'Lume alumine kiht x2',
-                'Lume sokid x2',
-                'Lume saapad',
-                'Lumeaud',
-                'Lume Kiiver',
-                'Lume kindad + tavakindad',
-                'Lume prillid',
-                'Suusamäekaartpilet'
-            ]},
-            { category: 'Hügieen', items: [
-                'Rätik',
-                'Habemeajamismasin',
-                'Küünekäärid',
-                'Päikesekreem',
-                'Hambahari pasta',
-                'Huulepalsam'
-            ]},
-            { category: 'Ravimid', items: [
-                'Peavalu',
-                'Vaseliin',
-                'Astma',
-                'Allergia'
-            ]},
-            { category: 'Dokumendid (Tähtis!)', items: [
-                'ID-kaart !!! Pass',
-                'Juhiluba',
-                'Rahakott/kaardid',
-                'Reisikindlustus'
-            ]},
-            { category: 'Elektroonika', items: [
-                'Telefon/Laadija',
-                'Arvuti/laadija+ kott',
-                'Kõrvaklapid',
-                'Pikendusjuhe + pistikuadapter',
-                'Kindle',
-                'GoPro'
-            ]},
-            { category: 'Muu', items: [
-                'Mängukaardid',
-                'Seljakott',
-                'Joogitops',
-                'Survival blanket',
-                'Autovautser',
-                'Raamat',
-                'Raha'
-            ]}
-        ];
+        const translations = {
+            et: {
+                title: '📋 Reisi checklist',
+                progress: 'märgitud',
+                clear: '🗑️ Tühjenda',
+                sort: '🔄 Sorteeri',
+                confirm: 'Oled kindel, et soovid kõik märgistused eemaldada?',
+                todo: 'Tegemata',
+                done: 'Tehtud',
+                items: [
+                    { category: 'Riided', items: ['Teksad + lühikesed suvel', 'Alukad +4', 'Sokid x4', 'T-särk x3', 'Pusa, kapsun x2', 'Pidulik särk', 'Ujukad', 'Kaelus'] },
+                    { category: 'Jalatsid', items: ['Plätud', 'Saapad'] },
+                    { category: 'Sport', items: ['Jooksutossud', 'Jooks sokid x2', 'Jooks sokid x3', 'Jooks müts', 'Jooks Dressid x2', 'Jooks särk x2', 'Jooks kampsun x1', 'Jooks kampsun x2', 'Jooks kilekas', 'Jooks kõrvaklapid', 'Jooks pulss', 'Jooks Prillid'] },
+                    { category: 'Talv', items: ['Lume jope', 'Lume püksid', 'Lume kampsun', 'Lume mask', 'Lume pikad alukad', 'Lume alumine kiht x2', 'Lume sokid x2', 'Lume saapad', 'Lumeaud', 'Lume Kiiver', 'Lume kindad + tavakindad', 'Lume prillid', 'Suusamäekaartpilet'] },
+                    { category: 'Hügieen', items: ['Rätik', 'Habemeajamismasin', 'Küünekäärid', 'Päikesekreem', 'Hambahari pasta', 'Huulepalsam'] },
+                    { category: 'Ravimid', items: ['Peavalu', 'Vaseliin', 'Astma', 'Allergia'] },
+                    { category: 'Dokumendid (Tähtis!)', items: ['ID-kaart !!! Pass', 'Juhiluba', 'Rahakott/kaardid', 'Reisikindlustus'] },
+                    { category: 'Elektroonika', items: ['Telefon/Laadija', 'Arvuti/laadija+ kott', 'Kõrvaklapid', 'Pikendusjuhe + pistikuadapter', 'Kindle', 'GoPro'] },
+                    { category: 'Muu', items: ['Mängukaardid', 'Seljakott', 'Joogitops', 'Survival blanket', 'Autovautser', 'Raamat', 'Raha'] }
+                ]
+            },
+            en: {
+                title: '📋 Travel Checklist',
+                progress: 'checked',
+                clear: '🗑️ Clear All',
+                sort: '🔄 Sort',
+                confirm: 'Are you sure you want to clear all checkmarks?',
+                todo: 'To Do',
+                done: 'Done',
+                items: [
+                    { category: 'Clothing', items: ['Jeans + shorts', 'Underwear +4', 'Socks x4', 'T-shirt x3', 'Sweater, hoodie x2', 'Dress shirt', 'Swimwear', 'Scarf'] },
+                    { category: 'Footwear', items: ['Sneakers', 'Boots'] },
+                    { category: 'Sports', items: ['Running shoes', 'Running socks x2', 'Running socks x3', 'Running hat', 'Running outfit x2', 'Running shirt x2', 'Running jacket x1', 'Running jacket x2', 'Running bag', 'Running headphones', 'Running HR monitor', 'Running glasses'] },
+                    { category: 'Winter', items: ['Snow jacket', 'Snow pants', 'Snow sweater', 'Snow mask', 'Thermal underwear', 'Base layer x2', 'Winter socks x2', 'Winter boots', 'Snowboard', 'Helmet', 'Snow gloves + regular gloves', 'Snow goggles', 'Ski pass'] },
+                    { category: 'Hygiene', items: ['Towel', 'Shaver', 'Nail clippers', 'Sunscreen', 'Toothbrush & paste', 'Lip balm'] },
+                    { category: 'Medicine', items: ['Headache pills', 'Vaseline', 'Asthma meds', 'Allergy meds'] },
+                    { category: 'Documents (Important!)', items: ['ID card !!! Passport', 'Driver\'s license', 'Wallet/cards', 'Travel insurance'] },
+                    { category: 'Electronics', items: ['Phone/Charger', 'Computer/charger + bag', 'Headphones', 'Extension cord + adapter', 'Kindle', 'GoPro'] },
+                    { category: 'Other', items: ['Playing cards', 'Backpack', 'Water bottle', 'Survival blanket', 'Car voucher', 'Book', 'Cash'] }
+                ]
+            }
+        };
 
-        let checkedItems = {};
+        let lang = localStorage.getItem('checklistLang') || 'et';
+        let checkedItems = JSON.parse(localStorage.getItem('travelChecklist') || '{}');
         let isSorted = false;
 
-        function loadState() {
-            const saved = localStorage.getItem('travelChecklist');
-            if (saved) {
-                try {
-                    checkedItems = JSON.parse(saved);
-                } catch (e) {
-                    checkedItems = {};
-                }
-            }
+        function toggleLanguage() {
+            lang = lang === 'et' ? 'en' : 'et';
+            localStorage.setItem('checklistLang', lang);
+            document.documentElement.lang = lang;
+            updateUI();
+            isSorted ? refreshSort() : render();
+            updateProgress();
+        }
+
+        function updateUI() {
+            const t = translations[lang];
+            document.getElementById('title').textContent = t.title;
+            document.getElementById('btnClear').textContent = t.clear;
+            document.getElementById('btnSort').textContent = t.sort;
+            document.getElementById('langBtn').textContent = lang === 'et' ? 'ET | EN' : 'EN | ET';
+        }
+
+        function getItems() {
+            return translations[lang].items;
         }
 
         function saveState() {
@@ -347,7 +287,7 @@
         }
 
         window.clearAll = function() {
-            if (confirm('Oled kindel, et soovid kõik märgistused eemaldada?')) {
+            if (confirm(translations[lang].confirm)) {
                 checkedItems = {};
                 localStorage.removeItem('travelChecklist');
                 isSorted = false;
@@ -358,143 +298,77 @@
 
         window.refreshSort = function() {
             isSorted = true;
-            const checklistEl = document.getElementById('checklist');
-            checklistEl.innerHTML = '';
+            const el = document.getElementById('checklist');
+            el.innerHTML = '';
+            const items = getItems();
+            const t = translations[lang];
 
-            items.forEach(category => {
-                const uncheckedItems = category.items.filter(item => {
-                    const itemId = `${category.category}-${item}`;
-                    return !checkedItems[itemId];
-                });
-
-                if (uncheckedItems.length > 0) {
-                    const categoryEl = document.createElement('div');
-                    categoryEl.className = 'category';
-
-                    const titleEl = document.createElement('div');
-                    titleEl.className = 'category-title';
-                    titleEl.textContent = category.category + ' (Tegemata)';
-                    categoryEl.appendChild(titleEl);
-
-                    uncheckedItems.forEach(item => {
-                        const itemId = `${category.category}-${item}`;
-                        categoryEl.appendChild(createItemElement(itemId, item, category.category, false));
-                    });
-
-                    checklistEl.appendChild(categoryEl);
+            items.forEach(cat => {
+                const unchecked = cat.items.filter(i => !checkedItems[`${cat.category}-${i}`]);
+                if (unchecked.length) {
+                    const div = document.createElement('div');
+                    div.className = 'category';
+                    div.innerHTML = `<div class="category-title">${cat.category} (${t.todo})</div>`;
+                    unchecked.forEach(i => div.appendChild(createItem(cat.category, i, false)));
+                    el.appendChild(div);
                 }
             });
 
-            items.forEach(category => {
-                const checkedItemsList = category.items.filter(item => {
-                    const itemId = `${category.category}-${item}`;
-                    return checkedItems[itemId];
-                });
-
-                if (checkedItemsList.length > 0) {
-                    const categoryEl = document.createElement('div');
-                    categoryEl.className = 'category';
-
-                    const titleEl = document.createElement('div');
-                    titleEl.className = 'category-title';
-                    titleEl.textContent = category.category + ' (Tehtud)';
-                    categoryEl.appendChild(titleEl);
-
-                    checkedItemsList.forEach(item => {
-                        const itemId = `${category.category}-${item}`;
-                        categoryEl.appendChild(createItemElement(itemId, item, category.category, true));
-                    });
-
-                    checklistEl.appendChild(categoryEl);
+            items.forEach(cat => {
+                const checked = cat.items.filter(i => checkedItems[`${cat.category}-${i}`]);
+                if (checked.length) {
+                    const div = document.createElement('div');
+                    div.className = 'category';
+                    div.innerHTML = `<div class="category-title">${cat.category} (${t.done})</div>`;
+                    checked.forEach(i => div.appendChild(createItem(cat.category, i, true)));
+                    el.appendChild(div);
                 }
             });
         }
 
-        function createItemElement(itemId, itemText, categoryName, isChecked) {
-            const itemEl = document.createElement('div');
-            itemEl.className = 'item';
-
-            if (isChecked) {
-                itemEl.classList.add('checked');
+        function createItem(category, text, isChecked) {
+            const div = document.createElement('div');
+            div.className = 'item' + (isChecked ? ' checked' : '');
+            if (text.includes('!!!') || category.includes('Dokumendid') || category.includes('Documents')) {
+                div.classList.add('important');
             }
-
-            if (itemText.includes('!!!') || categoryName === 'Dokumendid (Tähtis!)') {
-                itemEl.classList.add('important');
-            }
-
-            itemEl.onclick = () => toggleItem(itemId);
-
-            const checkboxEl = document.createElement('div');
-            checkboxEl.className = 'checkbox';
-
-            const textEl = document.createElement('div');
-            textEl.className = 'item-text';
-            textEl.textContent = itemText;
-
-            itemEl.appendChild(checkboxEl);
-            itemEl.appendChild(textEl);
-
-            return itemEl;
+            div.onclick = () => toggleItem(`${category}-${text}`);
+            div.innerHTML = `<div class="checkbox"></div><div class="item-text">${text}</div>`;
+            return div;
         }
 
-        function toggleItem(itemId) {
-            if (checkedItems[itemId]) {
-                delete checkedItems[itemId];
-            } else {
-                checkedItems[itemId] = true;
-            }
+        function toggleItem(id) {
+            checkedItems[id] ? delete checkedItems[id] : checkedItems[id] = true;
             saveState();
-            if (isSorted) {
-                refreshSort();
-            } else {
-                render();
-            }
+            isSorted ? refreshSort() : render();
             updateProgress();
         }
 
         function updateProgress() {
-            let totalItems = 0;
-            let checkedCount = 0;
-
-            items.forEach(category => {
-                category.items.forEach(item => {
-                    totalItems++;
-                    const itemId = `${category.category}-${item}`;
-                    if (checkedItems[itemId]) {
-                        checkedCount++;
-                    }
-                });
-            });
-
-            const percentage = totalItems > 0 ? (checkedCount / totalItems) * 100 : 0;
-            document.getElementById('progressBar').style.width = percentage + '%';
-            document.getElementById('progressText').textContent = `${checkedCount} / ${totalItems} märgitud`;
+            const items = getItems();
+            let total = 0, checked = 0;
+            items.forEach(c => c.items.forEach(i => {
+                total++;
+                if (checkedItems[`${c.category}-${i}`]) checked++;
+            }));
+            document.getElementById('progressBar').style.width = (total ? checked / total * 100 : 0) + '%';
+            document.getElementById('progressText').textContent = `${checked} / ${total} ${translations[lang].progress}`;
         }
 
         function render() {
-            const checklistEl = document.getElementById('checklist');
-            checklistEl.innerHTML = '';
-
-            items.forEach(category => {
-                const categoryEl = document.createElement('div');
-                categoryEl.className = 'category';
-
-                const titleEl = document.createElement('div');
-                titleEl.className = 'category-title';
-                titleEl.textContent = category.category;
-                categoryEl.appendChild(titleEl);
-
-                category.items.forEach(item => {
-                    const itemId = `${category.category}-${item}`;
-                    const isChecked = !!checkedItems[itemId];
-                    categoryEl.appendChild(createItemElement(itemId, item, category.category, isChecked));
-                });
-
-                checklistEl.appendChild(categoryEl);
+            const el = document.getElementById('checklist');
+            el.innerHTML = '';
+            getItems().forEach(cat => {
+                const div = document.createElement('div');
+                div.className = 'category';
+                div.innerHTML = `<div class="category-title">${cat.category}</div>`;
+                cat.items.forEach(i => div.appendChild(createItem(cat.category, i, !!checkedItems[`${cat.category}-${i}`])));
+                el.appendChild(div);
             });
         }
 
-        loadState();
+        document.documentElement.lang = lang;
+        updateUI();
         render();
         updateProgress();
     </script>
