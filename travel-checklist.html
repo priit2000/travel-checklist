@@ -1,23 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="et">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Travel Checklist</title>
-	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✈️</text></svg>">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=5">
+    <title>Reisi checklist</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✈️</text></svg>">
 
-    <!-- PWA Meta Tags -->
     <meta name="theme-color" content="#667eea">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Travel Checklist">
-    <meta name="description" content="Organize your travel packing with this simple checklist app">
+    <meta name="apple-mobile-web-app-title" content="Reisi checklist">
+    <meta name="description" content="Organiseeri oma reisipakkimine selle lihtsa checklisti abil">
 
-    <!-- Web App Manifest (inline) -->
-    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIlRyYXZlbCBDaGVja2xpc3QiLAogICJzaG9ydF9uYW1lIjogIlRyYXZlbCIsCiAgImRlc2NyaXB0aW9uIjogIk9yZ2FuaXplIHlvdXIgdHJhdmVsIHBhY2tpbmcgd2l0aCB0aGlzIHNpbXBsZSBjaGVja2xpc3QgYXBwIiwKICAic3RhcnRfdXJsIjogIi4vIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjNjY3ZWVhIiwKICAidGhlbWVfY29sb3IiOiAiIzY2N2VlYSIsCiAgIm9yaWVudGF0aW9uIjogInBvcnRyYWl0IiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sLDxzdmcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJyB2aWV3Qm94PScwIDAgMTAwIDEwMCc+PHJlY3Qgd2lkdGg9JzEwMCcgaGVpZ2h0PScxMDAnIGZpbGw9JyU2NjdlZWEnLz48dGV4dCB4PSc1MCUyNScgeT0nNTAlMjUnIGZvbnQtc2l6ZT0nNzAnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGR5PScuMzVlbSc+JUYwJTlGJTkyJUJDPC90ZXh0Pjwvc3ZnPiIsCiAgICAgICJzaXplcyI6ICIxOTJ4MTkyIiwKICAgICAgInR5cGUiOiAiaW1hZ2Uvc3ZnK3htbCIsCiAgICAgICJwdXJwb3NlIjogImFueSBtYXNrYWJsZSIKICAgIH0sCiAgICB7CiAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sLDxzdmcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJyB2aWV3Qm94PScwIDAgMTAwIDEwMCc+PHJlY3Qgd2lkdGg9JzEwMCcgaGVpZ2h0PScxMDAnIGZpbGw9JyU2NjdlZWEnLz48dGV4dCB4PSc1MCUyNScgeT0nNTAlMjUnIGZvbnQtc2l6ZT0nNzAnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGR5PScuMzVlbSc+JUYwJTlGJTkyJUJDPC90ZXh0Pjwvc3ZnPiIsCiAgICAgICJzaXplcyI6ICI1MTJ4NTEyIiwKICAgICAgInR5cGUiOiAiaW1hZ2Uvc3ZnK3htbCIsCiAgICAgICJwdXJwb3NlIjogImFueSBtYXNrYWJsZSIKICAgIH0KICBdCn0=">
-
-    <!-- Apple Touch Icon -->
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23667eea'/><text x='50%25' y='50%25' font-size='70' text-anchor='middle' dy='.35em'>📼</text></svg>">
     <style>
         * {
             margin: 0;
@@ -25,56 +19,44 @@
             box-sizing: border-box;
         }
 
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            height: 100vh;
+            background-attachment: fixed;
             padding: 20px;
-            overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
         .container {
             max-width: 500px;
+            width: 100%;
             margin: 0 auto;
             background: white;
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            overflow: hidden;
-            height: calc(100vh - 40px);
             display: flex;
             flex-direction: column;
+            flex: 1;
+            min-height: 0;
+            overflow: hidden;
         }
 
         .header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 30px 20px;
+            padding: 20px;
             text-align: center;
-            position: relative;
-        }
-
-        .lang-toggle {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(255,255,255,0.2);
-            border: 2px solid white;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .lang-toggle:hover {
-            background: rgba(255,255,255,0.3);
-            transform: scale(1.05);
+            flex-shrink: 0;
         }
 
         h1 {
-            font-size: 28px;
+            font-size: 24px;
             margin-bottom: 10px;
             font-weight: 600;
         }
@@ -84,7 +66,7 @@
             border-radius: 10px;
             height: 8px;
             overflow: hidden;
-            margin-top: 15px;
+            margin-top: 10px;
         }
 
         .progress-bar {
@@ -95,35 +77,37 @@
         }
 
         .progress-text {
-            margin-top: 10px;
+            margin-top: 8px;
             font-size: 14px;
             opacity: 0.9;
         }
 
         .checklist {
-            padding: 20px;
+            padding: 15px;
             overflow-y: auto;
             flex: 1;
+            min-height: 0;
+            -webkit-overflow-scrolling: touch;
         }
 
         .category {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .category-title {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
             color: #764ba2;
-            margin-bottom: 15px;
-            padding-bottom: 8px;
+            margin-bottom: 10px;
+            padding-bottom: 6px;
             border-bottom: 2px solid #f0f0f0;
         }
 
         .item {
             display: flex;
             align-items: center;
-            padding: 12px;
-            margin-bottom: 8px;
+            padding: 10px;
+            margin-bottom: 6px;
             background: #f8f9fa;
             border-radius: 10px;
             transition: all 0.3s ease;
@@ -142,11 +126,11 @@
         }
 
         .checkbox {
-            width: 24px;
-            height: 24px;
+            width: 22px;
+            height: 22px;
             border: 2px solid #667eea;
             border-radius: 6px;
-            margin-right: 15px;
+            margin-right: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -162,7 +146,7 @@
         .checkbox::after {
             content: '✓';
             color: white;
-            font-size: 16px;
+            font-size: 14px;
             opacity: 0;
             transform: scale(0);
             transition: all 0.3s ease;
@@ -174,7 +158,7 @@
         }
 
         .item-text {
-            font-size: 16px;
+            font-size: 15px;
             color: #333;
             flex: 1;
         }
@@ -190,19 +174,20 @@
         }
 
         .footer {
-            padding: 20px;
+            padding: 15px;
             background: #f8f9fa;
             border-top: 1px solid #e0e0e0;
             display: flex;
             gap: 10px;
+            flex-shrink: 0;
         }
 
         .btn-clear, .btn-refresh {
             flex: 1;
-            padding: 12px 20px;
+            padding: 12px 15px;
             border: none;
             border-radius: 10px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -215,8 +200,6 @@
 
         .btn-clear:hover {
             background: #ff5252;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255,107,107,0.3);
         }
 
         .btn-refresh {
@@ -225,13 +208,10 @@
 
         .btn-refresh:hover {
             background: #45b7b0;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(78,205,196,0.3);
         }
 
-        /* Scrollbar styling */
         .checklist::-webkit-scrollbar {
-            width: 8px;
+            width: 6px;
         }
 
         .checklist::-webkit-scrollbar-track {
@@ -240,291 +220,122 @@
         }
 
         .checklist::-webkit-scrollbar-thumb {
-            background: #888;
+            background: #ccc;
             border-radius: 10px;
         }
 
         .checklist::-webkit-scrollbar-thumb:hover {
-            background: #555;
+            background: #999;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <button class="lang-toggle" onclick="toggleLanguage()">EN | ET</button>
-            <h1 id="title">📋 Travel Checklist</h1>
+            <h1>📋 Reisi checklist</h1>
             <div class="progress">
                 <div class="progress-bar" id="progressBar"></div>
             </div>
-            <div class="progress-text" id="progressText">0 / 0 checked</div>
+            <div class="progress-text" id="progressText">0 / 0 märgitud</div>
         </div>
 
         <div class="checklist" id="checklist"></div>
 
         <div class="footer">
-            <button class="btn-clear" onclick="clearAll()" id="btnClear">🗑️ Clear All</button>
-            <button class="btn-refresh" onclick="refreshSort()" id="btnSort">🔄 Sort</button>
+            <button class="btn-clear" onclick="clearAll()">🗑️ Tühjenda</button>
+            <button class="btn-refresh" onclick="refreshSort()">🔄 Sorteeri</button>
         </div>
     </div>
 
     <script>
-        // Language translations
-        const translations = {
-            en: {
-                title: '📋 Travel Checklist',
-                progressText: 'checked',
-                btnClear: '🗑️ Clear All',
-                btnSort: '🔄 Sort',
-                confirmClear: 'Are you sure you want to clear all checkmarks?',
-                sortTodo: 'To Do',
-                sortDone: 'Done',
-                categories: {
-                    'Clothing': 'Clothing',
-                    'Footwear': 'Footwear',
-                    'Sports': 'Sports',
-                    'Winter': 'Winter',
-                    'Hygiene': 'Hygiene',
-                    'Medicine': 'Medicine',
-                    'Documents (Important!)': 'Documents (Important!)',
-                    'Electronics': 'Electronics',
-                    'Other': 'Other'
-                },
-                items: [
-                    { category: 'Clothing', items: [
-                        'Jeans + shorts for summer',
-                        'Underwear +4',
-                        'Socks x4',
-                        'T-shirt x3',
-                        'Sweater, hoodie x2',
-                        'Dress shirt',
-                        'Swimwear',
-                        'Scarf'
-                    ]},
-                    { category: 'Footwear', items: [
-                        'Sneakers',
-                        'Boots'
-                    ]},
-                    { category: 'Sports', items: [
-                        'Running shoes',
-                        'Running socks x2',
-                        'Running socks x3',
-                        'Running hat',
-                        'Running outfit x2',
-                        'Running shirt x2',
-                        'Running jacket x1',
-                        'Running jacket x2',
-                        'Running bag',
-                        'Running headphones',
-                        'Running heart rate monitor',
-                        'Running glasses'
-                    ]},
-                    { category: 'Winter', items: [
-                        'Snow jacket',
-                        'Snow pants',
-                        'Snow sweater',
-                        'Snow mask',
-                        'Thermal underwear',
-                        'Base layer x2',
-                        'Winter socks x2',
-                        'Winter boots',
-                        'Snowboard',
-                        'Helmet',
-                        'Snow gloves + regular gloves',
-                        'Snow goggles',
-                        'Ski pass'
-                    ]},
-                    { category: 'Hygiene', items: [
-                        'Towel',
-                        'Shaver',
-                        'Nail clippers',
-                        'Sunscreen',
-                        'Toothbrush & toothpaste',
-                        'Lip balm'
-                    ]},
-                    { category: 'Medicine', items: [
-                        'Headache medicine',
-                        'Vaseline',
-                        'Asthma medication',
-                        'Allergy medication'
-                    ]},
-                    { category: 'Documents (Important!)', items: [
-                        'ID card !!! Passport',
-                        'Driver\'s license',
-                        'Wallet/cards',
-                        'Travel insurance'
-                    ]},
-                    { category: 'Electronics', items: [
-                        'Phone/Charger',
-                        'Computer/charger + bag',
-                        'Headphones',
-                        'Extension cord + plug adapter',
-                        'Kindle',
-                        'GoPro'
-                    ]},
-                    { category: 'Other', items: [
-                        'Playing cards',
-                        'Backpack',
-                        'Water bottle',
-                        'Survival blanket',
-                        'Travel voucher',
-                        'Book',
-                        'Cash'
-                    ]}
-                ]
-            },
-            et: {
-                title: '📋 Reisi checklist',
-                progressText: 'märgitud',
-                btnClear: '🗑️ Tühjenda kõik',
-                btnSort: '🔄 Sorteeri',
-                confirmClear: 'Oled kindel, et soovid kõik märgistused eemaldada?',
-                sortTodo: 'Tegemata',
-                sortDone: 'Tehtud',
-                categories: {
-                    'Clothing': 'Riided',
-                    'Footwear': 'Jalatsid',
-                    'Sports': 'Sport',
-                    'Winter': 'Talv',
-                    'Hygiene': 'Hügieen',
-                    'Medicine': 'Ravimid',
-                    'Documents (Important!)': 'Dokumendid (Tähtis!)',
-                    'Electronics': 'Elektroonika',
-                    'Other': 'Muu'
-                },
-                items: [
-                    { category: 'Clothing', items: [
-                        'Teksad + lühikesed suvel',
-                        'Alukad +4',
-                        'Sokid x4',
-                        'T-särk x3',
-                        'Pusa, kapsun x2',
-                        'Pidulik särk',
-                        'Ujukad',
-                        'Kaelus'
-                    ]},
-                    { category: 'Footwear', items: [
-                        'Plätud',
-                        'Saapad'
-                    ]},
-                    { category: 'Sports', items: [
-                        'Jooksutossud',
-                        'Jooks sokid x2',
-                        'Jooks sokid x3',
-                        'Jooks müts',
-                        'Jooks Dressid x2',
-                        'Jooks särk x2',
-                        'Jooks kampsun x1',
-                        'Jooks kampsun x2',
-                        'Jooks kilekas',
-                        'Jooks kõrvaklapid',
-                        'Jooks pulss',
-                        'Jooks Prillid'
-                    ]},
-                    { category: 'Winter', items: [
-                        'Lume jope',
-                        'Lume püksid',
-                        'Lume kampsun',
-                        'Lume mask',
-                        'Lume pikad alukad',
-                        'Lume alumine kiht x2',
-                        'Lume sokid x2',
-                        'Lume saapad',
-                        'Lumeaud',
-                        'Lume Kiiver',
-                        'Lume kindad + tavakindad',
-                        'Lume prillid',
-                        'Suusamäekaartpilet'
-                    ]},
-                    { category: 'Hygiene', items: [
-                        'Rätik',
-                        'Habemeajamismasin',
-                        'Küünekäärid',
-                        'Päikesekreem',
-                        'Hambahari pasta',
-                        'Huulepalsam'
-                    ]},
-                    { category: 'Medicine', items: [
-                        'Peavalu',
-                        'Vaseliin',
-                        'Astma',
-                        'Allergia'
-                    ]},
-                    { category: 'Documents (Important!)', items: [
-                        'ID-kaart !!! Pass',
-                        'Juhiluba',
-                        'Rahakott/kaardid',
-                        'Reisikindlustus'
-                    ]},
-                    { category: 'Electronics', items: [
-                        'Telefon/Laadija',
-                        'Arvuti/laadija+ kott',
-                        'Kõrvaklapid',
-                        'Pikendusjuhe + pistikuadapter',
-                        'Kindle',
-                        'GoPro'
-                    ]},
-                    { category: 'Other', items: [
-                        'Mängukaardid',
-                        'Seljakott',
-                        'Joogitops',
-                        'Survival blanket',
-                        'Autovautser',
-                        'Raamat',
-                        'Raha'
-                    ]}
-                ]
-            }
-        };
+        const items = [
+            { category: 'Riided', items: [
+                'Teksad + lühikesed suvel',
+                'Alukad +4',
+                'Sokid x4',
+                'T-särk x3',
+                'Pusa, kapsun x2',
+                'Pidulik särk',
+                'Ujukad',
+                'Kaelus'
+            ]},
+            { category: 'Jalatsid', items: [
+                'Plätud',
+                'Saapad'
+            ]},
+            { category: 'Sport', items: [
+                'Jooksutossud',
+                'Jooks sokid x2',
+                'Jooks sokid x3',
+                'Jooks müts',
+                'Jooks Dressid x2',
+                'Jooks särk x2',
+                'Jooks kampsun x1',
+                'Jooks kampsun x2',
+                'Jooks kilekas',
+                'Jooks kõrvaklapid',
+                'Jooks pulss',
+                'Jooks Prillid'
+            ]},
+            { category: 'Talv', items: [
+                'Lume jope',
+                'Lume püksid',
+                'Lume kampsun',
+                'Lume mask',
+                'Lume pikad alukad',
+                'Lume alumine kiht x2',
+                'Lume sokid x2',
+                'Lume saapad',
+                'Lumeaud',
+                'Lume Kiiver',
+                'Lume kindad + tavakindad',
+                'Lume prillid',
+                'Suusamäekaartpilet'
+            ]},
+            { category: 'Hügieen', items: [
+                'Rätik',
+                'Habemeajamismasin',
+                'Küünekäärid',
+                'Päikesekreem',
+                'Hambahari pasta',
+                'Huulepalsam'
+            ]},
+            { category: 'Ravimid', items: [
+                'Peavalu',
+                'Vaseliin',
+                'Astma',
+                'Allergia'
+            ]},
+            { category: 'Dokumendid (Tähtis!)', items: [
+                'ID-kaart !!! Pass',
+                'Juhiluba',
+                'Rahakott/kaardid',
+                'Reisikindlustus'
+            ]},
+            { category: 'Elektroonika', items: [
+                'Telefon/Laadija',
+                'Arvuti/laadija+ kott',
+                'Kõrvaklapid',
+                'Pikendusjuhe + pistikuadapter',
+                'Kindle',
+                'GoPro'
+            ]},
+            { category: 'Muu', items: [
+                'Mängukaardid',
+                'Seljakott',
+                'Joogitops',
+                'Survival blanket',
+                'Autovautser',
+                'Raamat',
+                'Raha'
+            ]}
+        ];
 
-        let currentLang = 'en';
         let checkedItems = {};
         let isSorted = false;
 
-        // Load language preference
-        function loadLanguage() {
-            const saved = localStorage.getItem('travelChecklistLang');
-            if (saved && (saved === 'en' || saved === 'et')) {
-                currentLang = saved;
-            }
-        }
-
-        // Save language preference
-        function saveLanguage() {
-            localStorage.setItem('travelChecklistLang', currentLang);
-        }
-
-        // Toggle language
-        window.toggleLanguage = function() {
-            currentLang = currentLang === 'en' ? 'et' : 'en';
-            saveLanguage();
-            updateUI();
-            if (isSorted) {
-                refreshSort();
-            } else {
-                render();
-            }
-            updateProgress();
-        }
-
-        // Update UI text
-        function updateUI() {
-            const t = translations[currentLang];
-            document.getElementById('title').textContent = t.title;
-            document.getElementById('btnClear').textContent = t.btnClear;
-            document.getElementById('btnSort').textContent = t.btnSort;
-            document.title = t.title;
-            document.documentElement.lang = currentLang;
-        }
-
-        // Get current items
-        function getItems() {
-            return translations[currentLang].items;
-        }
-
-        // Load saved state from localStorage
         function loadState() {
-            const saved = localStorage.getItem('travelChecklistState');
+            const saved = localStorage.getItem('travelChecklist');
             if (saved) {
                 try {
                     checkedItems = JSON.parse(saved);
@@ -534,32 +345,25 @@
             }
         }
 
-        // Save state to localStorage
         function saveState() {
-            localStorage.setItem('travelChecklistState', JSON.stringify(checkedItems));
+            localStorage.setItem('travelChecklist', JSON.stringify(checkedItems));
         }
 
-        // Clear all function
         window.clearAll = function() {
-            const t = translations[currentLang];
-            if (confirm(t.confirmClear)) {
+            if (confirm('Oled kindel, et soovid kõik märgistused eemaldada?')) {
                 checkedItems = {};
-                localStorage.removeItem('travelChecklistState');
+                localStorage.removeItem('travelChecklist');
                 isSorted = false;
                 render();
                 updateProgress();
             }
         }
 
-        // Refresh sort function
         window.refreshSort = function() {
             isSorted = true;
             const checklistEl = document.getElementById('checklist');
             checklistEl.innerHTML = '';
-            const items = getItems();
-            const t = translations[currentLang];
 
-            // First render unchecked items
             items.forEach(category => {
                 const uncheckedItems = category.items.filter(item => {
                     const itemId = `${category.category}-${item}`;
@@ -572,8 +376,7 @@
 
                     const titleEl = document.createElement('div');
                     titleEl.className = 'category-title';
-                    const translatedCategory = t.categories[category.category] || category.category;
-                    titleEl.textContent = translatedCategory + ' (' + t.sortTodo + ')';
+                    titleEl.textContent = category.category + ' (Tegemata)';
                     categoryEl.appendChild(titleEl);
 
                     uncheckedItems.forEach(item => {
@@ -585,7 +388,6 @@
                 }
             });
 
-            // Then render checked items
             items.forEach(category => {
                 const checkedItemsList = category.items.filter(item => {
                     const itemId = `${category.category}-${item}`;
@@ -598,8 +400,7 @@
 
                     const titleEl = document.createElement('div');
                     titleEl.className = 'category-title';
-                    const translatedCategory = t.categories[category.category] || category.category;
-                    titleEl.textContent = translatedCategory + ' (' + t.sortDone + ')';
+                    titleEl.textContent = category.category + ' (Tehtud)';
                     categoryEl.appendChild(titleEl);
 
                     checkedItemsList.forEach(item => {
@@ -612,7 +413,6 @@
             });
         }
 
-        // Create item element
         function createItemElement(itemId, itemText, categoryName, isChecked) {
             const itemEl = document.createElement('div');
             itemEl.className = 'item';
@@ -621,7 +421,7 @@
                 itemEl.classList.add('checked');
             }
 
-            if (itemText.includes('!!!') || categoryName === 'Documents (Important!)') {
+            if (itemText.includes('!!!') || categoryName === 'Dokumendid (Tähtis!)') {
                 itemEl.classList.add('important');
             }
 
@@ -640,7 +440,6 @@
             return itemEl;
         }
 
-        // Toggle item checked status
         function toggleItem(itemId) {
             if (checkedItems[itemId]) {
                 delete checkedItems[itemId];
@@ -656,11 +455,9 @@
             updateProgress();
         }
 
-        // Update progress bar
         function updateProgress() {
             let totalItems = 0;
             let checkedCount = 0;
-            const items = getItems();
 
             items.forEach(category => {
                 category.items.forEach(item => {
@@ -674,16 +471,12 @@
 
             const percentage = totalItems > 0 ? (checkedCount / totalItems) * 100 : 0;
             document.getElementById('progressBar').style.width = percentage + '%';
-            const t = translations[currentLang];
-            document.getElementById('progressText').textContent = `${checkedCount} / ${totalItems} ${t.progressText}`;
+            document.getElementById('progressText').textContent = `${checkedCount} / ${totalItems} märgitud`;
         }
 
-        // Render the checklist
         function render() {
             const checklistEl = document.getElementById('checklist');
             checklistEl.innerHTML = '';
-            const items = getItems();
-            const t = translations[currentLang];
 
             items.forEach(category => {
                 const categoryEl = document.createElement('div');
@@ -691,8 +484,7 @@
 
                 const titleEl = document.createElement('div');
                 titleEl.className = 'category-title';
-                const translatedCategory = t.categories[category.category] || category.category;
-                titleEl.textContent = translatedCategory;
+                titleEl.textContent = category.category;
                 categoryEl.appendChild(titleEl);
 
                 category.items.forEach(item => {
@@ -705,94 +497,9 @@
             });
         }
 
-        // Initialize
-        loadLanguage();
         loadState();
-        updateUI();
         render();
         updateProgress();
-
-        // PWA Service Worker Registration
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                const swCode = `
-                    const CACHE_NAME = 'travel-checklist-v2';
-
-                    self.addEventListener('install', (event) => {
-                        event.waitUntil(
-                            caches.open(CACHE_NAME).then((cache) => {
-                                return cache.addAll([
-                                    './',
-                                    self.location.href
-                                ]);
-                            })
-                        );
-                        self.skipWaiting();
-                    });
-
-                    self.addEventListener('activate', (event) => {
-                        event.waitUntil(
-                            caches.keys().then((cacheNames) => {
-                                return Promise.all(
-                                    cacheNames.map((cacheName) => {
-                                        if (cacheName !== CACHE_NAME) {
-                                            return caches.delete(cacheName);
-                                        }
-                                    })
-                                );
-                            })
-                        );
-                        return self.clients.claim();
-                    });
-
-                    self.addEventListener('fetch', (event) => {
-                        event.respondWith(
-                            caches.match(event.request).then((response) => {
-                                return response || fetch(event.request).then((fetchResponse) => {
-                                    return caches.open(CACHE_NAME).then((cache) => {
-                                        cache.put(event.request, fetchResponse.clone());
-                                        return fetchResponse;
-                                    });
-                                });
-                            }).catch(() => {
-                                return caches.match('./');
-                            })
-                        );
-                    });
-                `;
-
-                const blob = new Blob([swCode], { type: 'application/javascript' });
-                const swUrl = URL.createObjectURL(blob);
-
-                navigator.serviceWorker.register(swUrl)
-                    .then((registration) => {
-                        console.log('PWA: Service Worker registered successfully');
-                        registration.addEventListener('updatefound', () => {
-                            const newWorker = registration.installing;
-                            newWorker.addEventListener('statechange', () => {
-                                if (newWorker.state === 'activated') {
-                                    console.log('PWA: New version available');
-                                }
-                            });
-                        });
-                    })
-                    .catch((error) => {
-                        console.log('PWA: Service Worker registration failed:', error);
-                    });
-            });
-
-            let deferredPrompt;
-            window.addEventListener('beforeinstallprompt', (e) => {
-                e.preventDefault();
-                deferredPrompt = e;
-                console.log('PWA: Install prompt available');
-            });
-
-            window.addEventListener('appinstalled', () => {
-                console.log('PWA: App installed successfully');
-                deferredPrompt = null;
-            });
-        }
     </script>
 </body>
 </html>
