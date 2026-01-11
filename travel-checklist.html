@@ -505,7 +505,7 @@
             document.getElementById('title').textContent = t.title;
             document.getElementById('btnClear').textContent = t.btnClear;
             document.getElementById('btnSort').textContent = t.btnSort;
-            document.getElementById('btnLang').textContent = currentLang.toUpperCase();
+            document.getElementById('btnLang').textContent = currentLang === 'en' ? 'ET' : 'EN';
             document.title = t.title;
             document.documentElement.lang = currentLang;
         }
