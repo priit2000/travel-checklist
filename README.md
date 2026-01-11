@@ -9,7 +9,7 @@ A simple, interactive web-based travel checklist to help you pack and prepare fo
 - **Persistent Storage** - Your selections are saved locally in the browser
 - **Sort Function** - Organize items by completed/pending status
 - **Responsive Design** - Works on desktop, tablet, and mobile devices
-- **Multi-language** - Available in Estonian and English
+- **Estonian Language** - Interface in Estonian
 
 ## Categories
 
@@ -27,9 +27,7 @@ The checklist is organized into practical categories:
 
 ## Usage
 
-### Online
-- Estonian version: Open `travel-checklist.html` in your browser
-- English version: Open `travel-checklist-en.html` in your browser
+Open `travel-checklist.html` in your browser.
 
 ### Features
 - **Check items** - Click any item to mark it as packed
@@ -38,7 +36,7 @@ The checklist is organized into practical categories:
 
 ## Local Storage
 
-The app uses browser's localStorage to save your progress. Each language version maintains its own separate checklist state, so you can use both independently.
+The app uses browser's localStorage to save your progress.
 
 ## Technologies
 
