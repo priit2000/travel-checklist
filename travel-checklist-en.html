@@ -5,6 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Travel Checklist</title>
 	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✈️</text></svg>">
+
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Travel Checklist">
+    <meta name="description" content="Organize your travel packing with this simple checklist app">
+
+    <!-- Web App Manifest (inline) -->
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIlRyYXZlbCBDaGVja2xpc3QiLAogICJzaG9ydF9uYW1lIjogIlRyYXZlbCIsCiAgImRlc2NyaXB0aW9uIjogIk9yZ2FuaXplIHlvdXIgdHJhdmVsIHBhY2tpbmcgd2l0aCB0aGlzIHNpbXBsZSBjaGVja2xpc3QgYXBwIiwKICAic3RhcnRfdXJsIjogIi4vIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjNjY3ZWVhIiwKICAidGhlbWVfY29sb3IiOiAiIzY2N2VlYSIsCiAgIm9yaWVudGF0aW9uIjogInBvcnRyYWl0IiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sLDxzdmcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJyB2aWV3Qm94PScwIDAgMTAwIDEwMCc+PHJlY3Qgd2lkdGg9JzEwMCcgaGVpZ2h0PScxMDAnIGZpbGw9JyU2NjdlZWEnLz48dGV4dCB4PSc1MCUyNScgeT0nNTAlMjUnIGZvbnQtc2l6ZT0nNzAnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGR5PScuMzVlbSc+JUYwJTlGJTkyJUJDPC90ZXh0Pjwvc3ZnPiIsCiAgICAgICJzaXplcyI6ICIxOTJ4MTkyIiwKICAgICAgInR5cGUiOiAiaW1hZ2Uvc3ZnK3htbCIsCiAgICAgICJwdXJwb3NlIjogImFueSBtYXNrYWJsZSIKICAgIH0sCiAgICB7CiAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sLDxzdmcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJyB2aWV3Qm94PScwIDAgMTAwIDEwMCc+PHJlY3Qgd2lkdGg9JzEwMCcgaGVpZ2h0PScxMDAnIGZpbGw9JyU2NjdlZWEnLz48dGV4dCB4PSc1MCUyNScgeT0nNTAlMjUnIGZvbnQtc2l6ZT0nNzAnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGR5PScuMzVlbSc+JUYwJTlGJTkyJUJDPC90ZXh0Pjwvc3ZnPiIsCiAgICAgICJzaXplcyI6ICI1MTJ4NTEyIiwKICAgICAgInR5cGUiOiAiaW1hZ2Uvc3ZnK3htbCIsCiAgICAgICJwdXJwb3NlIjogImFueSBtYXNrYWJsZSIKICAgIH0KICBdCn0=">
+
+    <!-- Apple Touch Icon -->
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23667eea'/><text x='50%25' y='50%25' font-size='70' text-anchor='middle' dy='.35em'>📼</text></svg>">
     <style>
         * {
             margin: 0;
@@ -527,6 +540,104 @@
         loadState();
         render();
         updateProgress();
+
+        // PWA Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                // Create service worker code as a string
+                const swCode = `
+                    const CACHE_NAME = 'travel-checklist-v1';
+
+                    // Install event - cache the app
+                    self.addEventListener('install', (event) => {
+                        event.waitUntil(
+                            caches.open(CACHE_NAME).then((cache) => {
+                                // Cache the current page
+                                return cache.addAll([
+                                    './',
+                                    self.location.href
+                                ]);
+                            })
+                        );
+                        self.skipWaiting();
+                    });
+
+                    // Activate event - clean up old caches
+                    self.addEventListener('activate', (event) => {
+                        event.waitUntil(
+                            caches.keys().then((cacheNames) => {
+                                return Promise.all(
+                                    cacheNames.map((cacheName) => {
+                                        if (cacheName !== CACHE_NAME) {
+                                            return caches.delete(cacheName);
+                                        }
+                                    })
+                                );
+                            })
+                        );
+                        return self.clients.claim();
+                    });
+
+                    // Fetch event - serve from cache, fallback to network
+                    self.addEventListener('fetch', (event) => {
+                        event.respondWith(
+                            caches.match(event.request).then((response) => {
+                                // Return cached version or fetch from network
+                                return response || fetch(event.request).then((fetchResponse) => {
+                                    // Cache new resources
+                                    return caches.open(CACHE_NAME).then((cache) => {
+                                        cache.put(event.request, fetchResponse.clone());
+                                        return fetchResponse;
+                                    });
+                                });
+                            }).catch(() => {
+                                // If both cache and network fail, return cached page
+                                return caches.match('./');
+                            })
+                        );
+                    });
+                `;
+
+                // Create a Blob from the service worker code
+                const blob = new Blob([swCode], { type: 'application/javascript' });
+                const swUrl = URL.createObjectURL(blob);
+
+                // Register the service worker
+                navigator.serviceWorker.register(swUrl)
+                    .then((registration) => {
+                        console.log('PWA: Service Worker registered successfully');
+
+                        // Listen for updates
+                        registration.addEventListener('updatefound', () => {
+                            const newWorker = registration.installing;
+                            newWorker.addEventListener('statechange', () => {
+                                if (newWorker.state === 'activated') {
+                                    console.log('PWA: New version available');
+                                }
+                            });
+                        });
+                    })
+                    .catch((error) => {
+                        console.log('PWA: Service Worker registration failed:', error);
+                    });
+            });
+
+            // Handle install prompt
+            let deferredPrompt;
+            window.addEventListener('beforeinstallprompt', (e) => {
+                // Prevent the mini-infobar from appearing on mobile
+                e.preventDefault();
+                // Store the event for later use
+                deferredPrompt = e;
+                console.log('PWA: Install prompt available');
+            });
+
+            // Log when app is installed
+            window.addEventListener('appinstalled', () => {
+                console.log('PWA: App installed successfully');
+                deferredPrompt = null;
+            });
+        }
     </script>
 </body>
 </html>
