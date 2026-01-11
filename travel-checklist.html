@@ -256,7 +256,7 @@
         <div class="footer">
             <button class="btn-clear" onclick="clearAll()" id="btnClear">🗑️ Clear All</button>
             <button class="btn-refresh" onclick="refreshSort()" id="btnSort">🔄 Sort</button>
-            <button class="lang-toggle" onclick="toggleLanguage()">EN</button>
+            <button class="lang-toggle" onclick="toggleLanguage()" id="btnLang">EN</button>
         </div>
     </div>
 
@@ -505,6 +505,7 @@
             document.getElementById('title').textContent = t.title;
             document.getElementById('btnClear').textContent = t.btnClear;
             document.getElementById('btnSort').textContent = t.btnSort;
+            document.getElementById('btnLang').textContent = currentLang.toUpperCase();
             document.title = t.title;
             document.documentElement.lang = currentLang;
         }
