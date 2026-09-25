@@ -108,6 +108,24 @@
             margin-bottom: 15px;
             padding-bottom: 8px;
             border-bottom: 2px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .category-check {
+            margin-right: 0;
+            cursor: pointer;
+        }
+
+        .category-check.checked {
+            background: #667eea;
+            border-color: #667eea;
+        }
+
+        .category-check.checked::after {
+            opacity: 1;
+            transform: scale(1);
         }
 
         .item {
@@ -294,19 +312,17 @@
                         'Scarf'
                     ]},
                     { category: 'Footwear', items: [
-                        'Sneakers',
+                        'Flip-flops',
                         'Boots'
                     ]},
                     { category: 'Sports', items: [
                         'Running shoes',
                         'Running socks x2',
-                        'Running socks x3',
                         'Running hat',
                         'Running outfit x2',
                         'Running shirt x2',
-                        'Running jacket x1',
-                        'Running jacket x2',
-                        'Running bag',
+                        'Running sweater x1',
+                        'Running windbreaker',
                         'Running headphones',
                         'Running heart rate monitor',
                         'Running glasses'
@@ -338,7 +354,8 @@
                         'Headache medicine',
                         'Vaseline',
                         'Asthma medication',
-                        'Allergy medication'
+                        'Allergy medication',
+                        'Other medicine'
                     ]},
                     { category: 'Documents (Important!)', items: [
                         'ID card !!! Passport',
@@ -359,7 +376,7 @@
                         'Backpack',
                         'Water bottle',
                         'Survival blanket',
-                        'Travel voucher',
+                        'Car rental voucher',
                         'Book',
                         'Cash'
                     ]}
@@ -390,7 +407,7 @@
                         'Alukad +4',
                         'Sokid x4',
                         'T-särk x3',
-                        'Pusa, kapsun x2',
+                        'Pusa, kampsun x2',
                         'Pidulik särk',
                         'Ujukad',
                         'Kaelus'
@@ -402,12 +419,10 @@
                     { category: 'Sports', items: [
                         'Jooksutossud',
                         'Jooks sokid x2',
-                        'Jooks sokid x3',
                         'Jooks müts',
                         'Jooks Dressid x2',
                         'Jooks särk x2',
                         'Jooks kampsun x1',
-                        'Jooks kampsun x2',
                         'Jooks kilekas',
                         'Jooks kõrvaklapid',
                         'Jooks pulss',
@@ -422,11 +437,11 @@
                         'Lume alumine kiht x2',
                         'Lume sokid x2',
                         'Lume saapad',
-                        'Lumeaud',
+                        'Lumelaud',
                         'Lume Kiiver',
                         'Lume kindad + tavakindad',
                         'Lume prillid',
-                        'Suusamäekaartpilet'
+                        'Suusapilet'
                     ]},
                     { category: 'Hygiene', items: [
                         'Rätik',
@@ -440,7 +455,8 @@
                         'Peavalu',
                         'Vaseliin',
                         'Astma',
-                        'Allergia'
+                        'Allergia',
+                        'Muud ravimid'
                     ]},
                     { category: 'Documents (Important!)', items: [
                         'ID-kaart !!! Pass',
@@ -460,7 +476,7 @@
                         'Mängukaardid',
                         'Seljakott',
                         'Joogitops',
-                        'Survival blanket',
+                        'Päästetekk',
                         'Autovautser',
                         'Raamat',
                         'Raha'
@@ -475,15 +491,19 @@
 
         // Load language preference
         function loadLanguage() {
-            const saved = localStorage.getItem('travelChecklistLang');
-            if (saved && (saved === 'en' || saved === 'et')) {
-                currentLang = saved;
-            }
+            try {
+                const saved = localStorage.getItem('travelChecklistLang');
+                if (saved && (saved === 'en' || saved === 'et')) {
+                    currentLang = saved;
+                }
+            } catch (e) {}
         }
 
         // Save language preference
         function saveLanguage() {
-            localStorage.setItem('travelChecklistLang', currentLang);
+            try {
+                localStorage.setItem('travelChecklistLang', currentLang);
+            } catch (e) {}
         }
 
         // Toggle language
@@ -517,19 +537,21 @@
 
         // Load saved state from localStorage
         function loadState() {
-            const saved = localStorage.getItem('travelChecklistState');
-            if (saved) {
-                try {
+            try {
+                const saved = localStorage.getItem('travelChecklistState');
+                if (saved) {
                     checkedItems = JSON.parse(saved);
-                } catch (e) {
-                    checkedItems = {};
                 }
+            } catch (e) {
+                checkedItems = {};
             }
         }
 
         // Save state to localStorage
         function saveState() {
-            localStorage.setItem('travelChecklistState', JSON.stringify(checkedItems));
+            try {
+                localStorage.setItem('travelChecklistState', JSON.stringify(checkedItems));
+            } catch (e) {}
         }
 
         // Clear all function
@@ -537,7 +559,9 @@
             const t = translations[currentLang];
             if (confirm(t.confirmClear)) {
                 checkedItems = {};
-                localStorage.removeItem('travelChecklistState');
+                try {
+                    localStorage.removeItem('travelChecklistState');
+                } catch (e) {}
                 isSorted = false;
                 render();
                 updateProgress();
@@ -563,11 +587,8 @@
                     const categoryEl = document.createElement('div');
                     categoryEl.className = 'category';
 
-                    const titleEl = document.createElement('div');
-                    titleEl.className = 'category-title';
                     const translatedCategory = t.categories[category.category] || category.category;
-                    titleEl.textContent = translatedCategory + ' (' + t.sortTodo + ')';
-                    categoryEl.appendChild(titleEl);
+                    categoryEl.appendChild(createCategoryTitle(category, translatedCategory + ' (' + t.sortTodo + ')'));
 
                     uncheckedItems.forEach(item => {
                         const itemId = `${category.category}-${item}`;
@@ -589,11 +610,8 @@
                     const categoryEl = document.createElement('div');
                     categoryEl.className = 'category';
 
-                    const titleEl = document.createElement('div');
-                    titleEl.className = 'category-title';
                     const translatedCategory = t.categories[category.category] || category.category;
-                    titleEl.textContent = translatedCategory + ' (' + t.sortDone + ')';
-                    categoryEl.appendChild(titleEl);
+                    categoryEl.appendChild(createCategoryTitle(category, translatedCategory + ' (' + t.sortDone + ')'));
 
                     checkedItemsList.forEach(item => {
                         const itemId = `${category.category}-${item}`;
@@ -603,6 +621,52 @@
                     checklistEl.appendChild(categoryEl);
                 }
             });
+        }
+
+        // Check if every item in a category is checked
+        function isCategoryChecked(category) {
+            return category.items.every(item => checkedItems[`${category.category}-${item}`]);
+        }
+
+        // Check or uncheck all items in a category
+        function toggleCategory(category) {
+            const allChecked = isCategoryChecked(category);
+            category.items.forEach(item => {
+                const itemId = `${category.category}-${item}`;
+                if (allChecked) {
+                    delete checkedItems[itemId];
+                } else {
+                    checkedItems[itemId] = true;
+                }
+            });
+            saveState();
+            if (isSorted) {
+                refreshSort();
+            } else {
+                render();
+            }
+            updateProgress();
+        }
+
+        // Create category title with select-all checkbox
+        function createCategoryTitle(category, label) {
+            const titleEl = document.createElement('div');
+            titleEl.className = 'category-title';
+
+            const textEl = document.createElement('span');
+            textEl.textContent = label;
+
+            const checkboxEl = document.createElement('div');
+            checkboxEl.className = 'checkbox category-check';
+            if (isCategoryChecked(category)) {
+                checkboxEl.classList.add('checked');
+            }
+            checkboxEl.onclick = () => toggleCategory(category);
+
+            titleEl.appendChild(textEl);
+            titleEl.appendChild(checkboxEl);
+
+            return titleEl;
         }
 
         // Create item element
@@ -678,15 +742,18 @@
             const items = getItems();
             const t = translations[currentLang];
 
-            items.forEach(category => {
+            // Fully checked categories go to the bottom
+            const ordered = [
+                ...items.filter(category => !isCategoryChecked(category)),
+                ...items.filter(category => isCategoryChecked(category))
+            ];
+
+            ordered.forEach(category => {
                 const categoryEl = document.createElement('div');
                 categoryEl.className = 'category';
 
-                const titleEl = document.createElement('div');
-                titleEl.className = 'category-title';
                 const translatedCategory = t.categories[category.category] || category.category;
-                titleEl.textContent = translatedCategory;
-                categoryEl.appendChild(titleEl);
+                categoryEl.appendChild(createCategoryTitle(category, translatedCategory));
 
                 category.items.forEach(item => {
                     const itemId = `${category.category}-${item}`;
